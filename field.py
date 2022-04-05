@@ -22,11 +22,13 @@ class Field:
     def place_ship(self, Ship):
         confirmation = 0
         while confirmation != 1:
+            Ship.points = []
             option = self.place_first()
             option_2 = self.place_second(option)
+            Ship.points = [option, option_2]
             size = Ship.ship_size
             if size > 2:
-                confirm = self.place_remaining(option, option_2, size).capitalize
+                confirm = self.place_remaining(option, option_2, Ship).capitalize
             if confirm == 'Y':
                 confirmation = 1
 
@@ -76,7 +78,8 @@ class Field:
                 option_2 = input(f'\n That is not an option, please select from above. Try something like (A20)\n')
         
         
-    def place_remaining(self, option, option_2, size):
+    def place_remaining(self, option, option_2, Ship):
+        size = Ship.ship_size
         # Finding the pattern between option letter and option 2 letter to determine letters for reamining ship points
         opt_index = self.alphabet.index(option[0])
         opt_2_index = self.alphabet.index(option_2[0])
@@ -92,10 +95,12 @@ class Field:
         for each in range(1,size-2):
             new_point = (f"{self.alphabet.index(new_point_alph+opt_alph_rate)}{new_point_int+opt_int_rate}")
             rem_ship_points.append(new_point)
+        # For each in new list, change the option in the matrix to a + and then add point to ship points list
         for each in rem_ship_points:
             for each_2 in self.matrix:
                 if each in each_2:
                     each_2[each_2.index(each)] = "+"
+            Ship.points.append(each)
         print(rem_ship_points)
         return input(f'These are the remaining points, is this correct? (Y/N)')
 
