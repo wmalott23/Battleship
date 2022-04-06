@@ -1,4 +1,4 @@
-from . import battlefield
+from battlefield import PlayerField, PlayerSelect
 
 clear = "\n"*50
 
@@ -12,9 +12,8 @@ class Battle:
     def run(self):
         self.greetings(self)
         self.game_setup(self)
-
-
-
+        winner = self.turn_loop(self)
+        self.win_announce(self, winner)
 
 
 
@@ -23,19 +22,31 @@ class Battle:
 
     def game_setup(self):
         print("First, player 1 please choose your ship locations")
-        self.p1field = battlefield.PlayerField
+        self.p1field = PlayerField
         print({clear})
         print("Now that player 1 has set up their field, it is now time for player 2 to set up their field.")
         print("Player 2, please select where your ships will go on your field")
-        self.p2field = battlefield.PlayerField
+        self.p2field = PlayerField
         print({clear})
         print("Now on to the game! Player 1 will go first.")
-        self.p1select = battlefield.PlayerSelect
-        self.p2select = battlefield.PlayerSelect
+        self.p1select = PlayerSelect
+        self.p2select = PlayerSelect
 
-
-
-
+    def turn_loop(self):
+        turn = 1
+        win_condition = 0
+        while win_condition == 0:
+            if turn % 2 == 0:
+                self.p2_turn
+            else:
+                self.p1_turn
+            if self.p1field.hp == 0:
+                win_condition = 2
+            if self.p2field.hp == 0:
+                win_condition = 1
+            turn += 1
+        return win_condition
+  
 
     def p1_turn(self):
         print(clear)
@@ -77,15 +88,14 @@ class Battle:
                 if choice in each:
                     each[each.index(choice)] = "00"
 
-
-
-
-
-
-
+    def win_announce(self, winner):
+        if winner == 1:
+            print('Player 1 wins!')
+        if winner == 2:
+            print('Player 2 wins!')
 
     def print_field(self, playerfield):
-        for each in self.playerfied.matrix:
+        for each in playerfield.matrix:
             print(f'{each}')
 
     def valid_choice(self, choice, playerfield):
