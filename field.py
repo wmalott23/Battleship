@@ -120,8 +120,11 @@ class Field:
                 if point in each:
                     each[each.index(point)] = "+"
                     counter = 1
+                    # setting the previous variable to the new variable in case of iteration
+                    opt_1_loc = self.alphabet.index(point[0])
+                    alph_1 = int(point[1:])
             if counter == 0:
-                print("A middle point conflicts with another point, please choose again.\n")
+                print("A middle point overlaps another ship, please choose again.\n")
                 return 'n'
         return point_list
 

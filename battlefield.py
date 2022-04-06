@@ -11,14 +11,7 @@ class PlayerField(Field):
         self.bat1_hp = len(self.battleship_1.points)
         self.bat2_hp = len(self.battleship_2.points)
         self.air_hp = len(self.air_carrier.points)
-
         self.hp = self.des_hp + self.sub_hp + self.bat1_hp + self.bat2_hp + self.air_hp
-        print(self.des_hp)
-        print(self.sub_hp)
-        print(self.bat1_hp)
-        print(self.bat2_hp)
-        print(self.air_hp)
-        print(self.hp)
 
 # What the players choose from
 class PlayerSelect(Field):
