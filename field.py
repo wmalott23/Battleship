@@ -20,17 +20,22 @@ class Field:
             print(f'{each}')
     
     def place_ship(self, Ship):
-        confirmation = 0
-        while confirmation != 1:
-            Ship.points = []
+        size = Ship.ship_size
+        confirmation = 'N'
+        # Find endpoints from User until they enter 'Y' for confirmation
+        while confirmation != 'Y':
             option = self.place_first()
-            option_2 = self.place_second(option)
-            Ship.points = [option, option_2]
-            size = Ship.ship_size
+            option_2 = self.place_endpoint(option, size)
             if size > 2:
-                confirm = self.place_remaining(option, option_2, Ship).capitalize
-            if confirm == 'Y':
-                confirmation = 1
+                rem_options = self.place_rest(option, option_2, size)
+            confirmation = self.confirm_ship(option, option_2, rem_options, size)
+        # Append points to ship, then reply with a confirmation print
+        self.ship_append(option, option_2, rem_options, Ship)
+        if size < 3:
+            print(f'{Ship.name} has been placed at {option} and {option_2}')
+        if size > 2:
+            print(f'{Ship.name} has been placed at {option}, {option_2}, {rem_options}')
+        
 
     def place_first(self):
         # Ask them for the initial input
@@ -48,12 +53,12 @@ class Field:
                 option = input(f'\n That is not a valid option, please enter one of the options seen above. Give a letter, then number (A20)\n')
         return option
 
-    def place_second(self, option):
+    def place_endpoint(self, option, size):
         # Finding potential choices for user, checking if a letter above and below is on matrix, then checking if a number above and below is on the matrix
-        pot_opt_1_letter = self.alphabet.index(option[0])-1
-        pot_opt_2_letter = self.alphabet.index(option[0])+1
-        pot_opt_3_number = int(option[1:])-1
-        pot_opt_4_number = int(option[1:])+1
+        pot_opt_1_letter = self.alphabet.index(option[0])-size
+        pot_opt_2_letter = self.alphabet.index(option[0])+size
+        pot_opt_3_number = int(option[1:])-size
+        pot_opt_4_number = int(option[1:])+size
         pot_options = []
         if pot_opt_1_letter > -1 and pot_opt_1_letter < 20:
             pot_options.append(f'{pot_opt_1_letter}{option[1:]}')
@@ -76,37 +81,47 @@ class Field:
             else:
                 print(pot_options)
                 option_2 = input(f'\n That is not an option, please select from above. Try something like (A20)\n')
-        
-        
-    def place_remaining(self, option, option_2, Ship):
-        size = Ship.ship_size
-        # Finding the pattern between option letter and option 2 letter to determine letters for reamining ship points
-        opt_index = self.alphabet.index(option[0])
-        opt_2_index = self.alphabet.index(option_2[0])
-        opt_alph_rate = opt_2_index - opt_index
-        # Finding the pattern between option number and option 2 number to determine numbers for remaining ship points
-        opt_int = int(option[1:])
-        opt_2_int = int(option_2[1:])
-        opt_int_rate = opt_2_int - opt_int
-        # Create remaining ship points based on letter and number rates, append to a list
-        rem_ship_points = []
-        new_point_alph = opt_2_index
-        new_point_int = opt_2_int
-        for each in range(1,size-2):
-            new_point = (f"{self.alphabet.index(new_point_alph+opt_alph_rate)}{new_point_int+opt_int_rate}")
-            rem_ship_points.append(new_point)
-        # For each in new list, change the option in the matrix to a + and then add point to ship points list
-        for each in rem_ship_points:
-            for each_2 in self.matrix:
-                if each in each_2:
-                    each_2[each_2.index(each)] = "+"
-            Ship.points.append(each)
-        print(rem_ship_points)
-        return input(f'These are the remaining points, is this correct? (Y/N)')
+        return option_2
 
 
+    def place_rest(self, option, option_2, size):
+        # Finding the correct rate to increment
+        opt_1_loc = self.alphabet.index(option[0])
+        opt_2_loc = self.alphabet.index(option_2[0])
+        alph_1 = int(option[1:])
+        alph_2 = int(option_2[1:])
+        alph_diff = opt_2_loc-opt_1_loc
+        alph_inc = alph_diff / (size-1)
+        num_diff = alph_2-alph_1
+        num_inc = num_diff / (size-1)
+        #Generating new points and appending them to a list and changing matrix with new point
+        point_list = []
+        for each in range(3,size):
+            letter = self.alphabet[opt_1_loc + alph_inc]
+            number = alph_1 + num_inc
+            point = (f'{letter}{number}')
+            point_list.append(point)
+            for each in self.matrix:
+                if point in each:
+                    each[each.index(option_2)] = "+"
+        return point_list
 
-
+    def confirm_ship(self, option, option_2, rem_options, size):
+        confirmation = ''
+        while confirmation != 'Y' or 'N':
+            if size > 2:
+                confirmation = input(f'Does {option}, {rem_options}, {option_2} sound correct for this ship? (Y/N)').capitalize
+            if size < 3:
+                confirmation = input(f'Does {option}, {option_2} sound correct for this ship? (Y/N)').capitalize
+            if confirmation != 'Y' or 'N':
+                confirmation = input('That was not a valid entry, please enter (Y/N)')
+        return confirmation
+    def ship_append(self, option, option_2, rem_options, Ship):
+        # append chosen points to ship.points
+        Ship.points.append(option)
+        Ship.points.append(option_2)
+        for each in rem_options:
+            Ship.points.append(each)        
 
 
 
