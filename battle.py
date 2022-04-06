@@ -1,6 +1,6 @@
 from battlefield import PlayerField, PlayerSelect
 
-clear = "\n"*50
+clear = (f"\n"*50)
 
 class Battle:
     def __init__(self):
@@ -10,10 +10,10 @@ class Battle:
         self.p2select = ""
 
     def run(self):
-        self.greetings(self)
-        self.game_setup(self)
-        winner = self.turn_loop(self)
-        self.win_announce(self, winner)
+        self.greetings()
+        self.game_setup()
+        winner = self.turn_loop()
+        self.win_announce(winner)
 
 
 
@@ -22,15 +22,15 @@ class Battle:
 
     def game_setup(self):
         print("First, player 1 please choose your ship locations")
-        self.p1field = PlayerField
+        self.p1field = PlayerField()
         print({clear})
         print("Now that player 1 has set up their field, it is now time for player 2 to set up their field.")
-        print("Player 2, please select where your ships will go on your field")
-        self.p2field = PlayerField
+        input("Player 2, please select where your ships will go on your field")
+        self.p2field = PlayerField()
         print({clear})
         print("Now on to the game! Player 1 will go first.")
-        self.p1select = PlayerSelect
-        self.p2select = PlayerSelect
+        self.p1select = PlayerSelect()
+        self.p2select = PlayerSelect()
 
     def turn_loop(self):
         turn = 1

@@ -28,9 +28,8 @@ class Field:
         size = Ship.ship_size
         confirmation = 'n'
         # Find endpoints from User until they enter 'Y' for confirmation
-        print(f"This ship is a {Ship.name} and takes up {size} points")
         while confirmation != 'y':
-            option = self.place_first()
+            option = self.place_first(Ship)
         # while loop repeats if middle points are over another ship
             rem_options = 'n'
             while rem_options == 'n':
@@ -48,9 +47,10 @@ class Field:
             print(f'{Ship.name} has been placed at {option}, {rem_options}, {option_2}')
         
 
-    def place_first(self):
+    def place_first(self,Ship):
         # Ask them for the initial input
         self.print_field()
+        print(f"This ship is a {Ship.name} and takes up {Ship.ship_size} points")
         option = input(f'\nPick where you would like the starting point of your ship to go from the matrix above! Give a letter, then number (A20)\n')
         choice = 0
         # verify input is good, ask again if input is bad
