@@ -5,6 +5,11 @@ class Field:
     def __init__(self):
         self.alphabet = list(string.ascii_uppercase)
         self.matrix = self.create_field()
+        self.destroyer = ""
+        self.submarine = ""
+        self.battleship_1 = ""
+        self.battleship_2 = ""
+        self.air_carrier = ""
 
     def create_field(self):
         field = []
@@ -133,11 +138,9 @@ class Field:
         for each in rem_options:
             Ship.points.append(each)        
 
-
-
-
-
-asdf = Field()
-Destroyer_1 = Destroyer()
-asdf.place_ship(Destroyer_1)
-print(Destroyer_1.points)
+    def set_up_ships(self):
+        self.place_ship(self.destroyer)
+        self.place_ship(self.submarine)
+        self.place_ship(self.battleship_1)
+        self.place_ship(self.battleship_2)
+        self.place_ship(self.air_carrier)
