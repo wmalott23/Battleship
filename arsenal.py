@@ -1,6 +1,7 @@
 from ship import Ship
 
 class Destroyer(Ship):
+
     def __init__(self):
         super().__init__(2, "Destroyer")
         
@@ -16,6 +17,6 @@ class Battleship_2(Ship):
     def __init__(self):
         super().__init__(4, "Battleship")
 
-class Destroyer(Ship):
+class AircraftCarrier(Ship):
     def __init__(self):
         super().__init__(5, "Aircraft Carrier")

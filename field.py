@@ -21,13 +21,15 @@ class Field:
     
     def place_ship(self, Ship):
         size = Ship.ship_size
-        confirmation = 'N'
+        confirmation = 'n'
         # Find endpoints from User until they enter 'Y' for confirmation
-        while confirmation != 'Y':
+        while confirmation != 'y':
             option = self.place_first()
             option_2 = self.place_endpoint(option, size)
             if size > 2:
                 rem_options = self.place_rest(option, option_2, size)
+            if size < 3:
+                rem_options = ''
             confirmation = self.confirm_ship(option, option_2, rem_options, size)
         # Append points to ship, then reply with a confirmation print
         self.ship_append(option, option_2, rem_options, Ship)
@@ -54,16 +56,19 @@ class Field:
         return option
 
     def place_endpoint(self, option, size):
+        end_size = size - 1
         # Finding potential choices for user, checking if a letter above and below is on matrix, then checking if a number above and below is on the matrix
-        pot_opt_1_letter = self.alphabet.index(option[0])-size
-        pot_opt_2_letter = self.alphabet.index(option[0])+size
-        pot_opt_3_number = int(option[1:])-size
-        pot_opt_4_number = int(option[1:])+size
+        pot_opt_1_letter = self.alphabet.index(option[0])-end_size
+        pot_opt_2_letter = self.alphabet.index(option[0])+end_size
+        pot_opt_1_alph = self.alphabet[pot_opt_1_letter]
+        pot_opt_2_alph = self.alphabet[pot_opt_2_letter]
+        pot_opt_3_number = int(option[1:])-end_size
+        pot_opt_4_number = int(option[1:])+end_size
         pot_options = []
         if pot_opt_1_letter > -1 and pot_opt_1_letter < 20:
-            pot_options.append(f'{pot_opt_1_letter}{option[1:]}')
+            pot_options.append(f'{pot_opt_1_alph}{option[1:]}')
         if pot_opt_2_letter > -1 and pot_opt_2_letter < 20:
-            pot_options.append(f'{pot_opt_2_letter}{option[1:]}')
+            pot_options.append(f'{pot_opt_2_alph}{option[1:]}')
         if pot_opt_3_number > 0 and pot_opt_3_number < 21:
             pot_options.append(f'{option[0]}{pot_opt_3_number}')
         if pot_opt_4_number > 0 and pot_opt_4_number < 21:
@@ -107,15 +112,17 @@ class Field:
         return point_list
 
     def confirm_ship(self, option, option_2, rem_options, size):
-        confirmation = ''
-        while confirmation != 'Y' or 'N':
+        confirm = ''
+        while confirm != 'y' or 'n':
             if size > 2:
-                confirmation = input(f'Does {option}, {rem_options}, {option_2} sound correct for this ship? (Y/N)').capitalize
+                confirm = input(f'Does {option}, {rem_options}, {option_2} sound correct for this ship? (y/n)')
             if size < 3:
-                confirmation = input(f'Does {option}, {option_2} sound correct for this ship? (Y/N)').capitalize
-            if confirmation != 'Y' or 'N':
-                confirmation = input('That was not a valid entry, please enter (Y/N)')
-        return confirmation
+                confirm = input(f'Does {option}, {option_2} sound correct for this ship? (y/n)')
+            if confirm != 'y' or 'n':
+                print('\nThat was not a valid entry, please enter (y/n)')
+        return confirm
+
+
     def ship_append(self, option, option_2, rem_options, Ship):
         # append chosen points to ship.points
         Ship.points.append(option)
@@ -128,5 +135,6 @@ class Field:
 
 
 asdf = Field()
-asdf.place_ship(Destroyer)
-asdf.print_field()
+Destroyer_1 = Destroyer()
+asdf.place_ship(Destroyer_1)
+print(asdf.Destroyer_1.points)
