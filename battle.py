@@ -1,6 +1,8 @@
 from battlefield import PlayerField, PlayerSelect
+import os
 
-clear = (f"\n"*50)
+def clear():
+    os.system('cls')
 
 class Battle:
     def __init__(self):
@@ -15,41 +17,45 @@ class Battle:
         winner = self.turn_loop()
         self.win_announce(winner)
 
-
-
     def greetings(self):
         print("Welcome to Battleship!")
+        input("Press enter to continue")
 
     def game_setup(self):
         print("First, player 1 please choose your ship locations")
+        input("Press enter to continue")
         self.p1field = PlayerField()
-        print({clear})
+        clear()
         print("Now that player 1 has set up their field, it is now time for player 2 to set up their field.")
-        input("Player 2, please select where your ships will go on your field")
+        input("Player 2, press enter when you are ready to select where your ships will go on your field")
         self.p2field = PlayerField()
-        print({clear})
-        print("Now on to the game! Player 1 will go first.")
+        clear()
+        input("Now on to the game! Player 1 will go first. Press enter when ready.")
         self.p1select = PlayerSelect()
         self.p2select = PlayerSelect()
 
     def turn_loop(self):
+        print('happening')
         turn = 1
         win_condition = 0
         while win_condition == 0:
-            if turn % 2 == 0:
+            if turn == 2:
                 self.p2_turn
-            else:
+                turn = 3
+            if turn == 1:
                 self.p1_turn
+            if turn == 3:
+                turn = 1
             if self.p1field.hp == 0:
                 win_condition = 2
             if self.p2field.hp == 0:
                 win_condition = 1
-            turn += 1
         return win_condition
   
 
     def p1_turn(self):
-        print(clear)
+        clear()
+        input("It's the next player's turn, please press enter when ready.")
         self.print_field(self.p1select)
         # Confirm player input is valid
         good = 0
@@ -69,7 +75,8 @@ class Battle:
                     each[each.index(choice)] = "00"
 
     def p2_turn(self):
-        print(clear)
+        clear()
+        input("It's the next player's turn, please press enter when ready.")
         self.print_field(self.p2select)
         # Confirm player input is valid
         good = 0

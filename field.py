@@ -50,7 +50,7 @@ class Field:
     def place_first(self,Ship):
         # Ask them for the initial input
         self.print_field()
-        print(f"This ship is a {Ship.name} and takes up {Ship.ship_size} points")
+        print(f"\nThis ship is a {Ship.name} and takes up {Ship.ship_size} points\n")
         option = input(f'\nPick where you would like the starting point of your ship to go from the matrix above! Give a letter, then number (A20)\n')
         choice = 0
         # verify input is good, ask again if input is bad

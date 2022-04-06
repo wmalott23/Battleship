@@ -18,4 +18,3 @@ class PlayerSelect(Field):
     def __init__(self):
         super().__init__()
 
-asdf = PlayerField()
