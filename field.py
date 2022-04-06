@@ -45,7 +45,7 @@ class Field:
         if size < 3:
             print(f'{Ship.name} has been placed at {option} and {option_2}')
         if size > 2:
-            print(f'{Ship.name} has been placed at {option}, {option_2}, {rem_options}')
+            print(f'{Ship.name} has been placed at {option}, {rem_options}, {option_2}')
         
 
     def place_first(self):
@@ -107,7 +107,7 @@ class Field:
         alph_diff = opt_2_loc-opt_1_loc
         alph_inc = int(alph_diff / (size-1))
         num_diff = alph_2-alph_1
-        num_inc = num_diff / (size-1)
+        num_inc = int(num_diff / (size-1))
         #Generating new points and appending them to a list and changing matrix with new point
         point_list = []
         for each in range(2,size):
@@ -118,7 +118,7 @@ class Field:
             counter = 0
             for each in self.matrix:
                 if point in each:
-                    each[each.index(option_2)] = "+"
+                    each[each.index(point)] = "+"
                     counter = 1
             if counter == 0:
                 print("A middle point conflicts with another point, please choose again.\n")
