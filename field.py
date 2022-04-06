@@ -57,7 +57,7 @@ class Field:
         while choice != 1:
             for each in self.matrix:
                 if option in each:
-                    each[each.index(option)] = "+"
+                    each[each.index(option)] = "++"
                     choice = 1
             if choice == 0:
                 self.print_field()
@@ -90,7 +90,7 @@ class Field:
             if option_2 in pot_options:
                 for each in self.matrix:
                     if option_2 in each:
-                        each[each.index(option_2)] = "+"
+                        each[each.index(option_2)] = "++"
                         counter = 1
             if counter != 1:
                 print(pot_options)
@@ -118,7 +118,7 @@ class Field:
             counter = 0
             for each in self.matrix:
                 if point in each:
-                    each[each.index(point)] = "+"
+                    each[each.index(point)] = "++"
                     counter = 1
                     # setting the previous variable to the new variable in case of iteration
                     opt_1_loc = self.alphabet.index(point[0])
