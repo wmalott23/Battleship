@@ -33,14 +33,68 @@ class Battle:
         self.p1select = battlefield.PlayerSelect
         self.p2select = battlefield.PlayerSelect
 
+
+
+
+
     def p1_turn(self):
         print(clear)
-        print(self.p1select)
-        choice = "Player 1, choose where you would like to attack! Like (A20)"
+        self.print_field(self.p1select)
+        # Confirm player input is valid
+        good = 0
+        while good == 0:
+            choice = "Player 1, choose where you would like to attack! Like (A20)"
+            good = self.valid_choice(self,choice,self.p1select)
+        # Verify if player input is a hit or miss
         hit_miss = self.check_arsenal(choice, self.p2field)
         if hit_miss == 1:
-            
+            for each in self.p1select.matrix:
+                if choice in each:
+                    each[each.index(choice)] = "++"
+        if hit_miss == 0:
+            print("Player 1 misses!")
+            for each in self.p1select.matrix:
+                if choice in each:
+                    each[each.index(choice)] = "00"
 
+    def p2_turn(self):
+        print(clear)
+        self.print_field(self.p2select)
+        # Confirm player input is valid
+        good = 0
+        while good == 0:
+            choice = "Player 2, choose where you would like to attack! Like (A20)"
+            good = self.valid_choice(self,choice,self.p2select)
+        # Verify if player input is a hit or miss
+        hit_miss = self.check_arsenal(choice, self.p1field)
+        if hit_miss == 1:
+            for each in self.p2select.matrix:
+                if choice in each:
+                    each[each.index(choice)] = "++"
+        if hit_miss == 0:
+            print("Player 2 misses!")
+            for each in self.p2select.matrix:
+                if choice in each:
+                    each[each.index(choice)] = "00"
+
+
+
+
+
+
+
+
+    def print_field(self, playerfield):
+        for each in self.playerfied.matrix:
+            print(f'{each}')
+
+    def valid_choice(self, choice, playerfield):
+        for each in playerfield.matrix:
+            if choice in each:
+                return 1
+            else:
+                print("Please choose another option, that is invalid")
+                return 0
 
     #checks to see if choice is in any of the point lists attributed to the ships, says hit or miss based on that
     def check_arsenal(self, choice, playerfield):
