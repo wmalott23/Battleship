@@ -1,5 +1,5 @@
 import string
-from arsenal import Destroyer
+from arsenal import AircraftCarrier, Battleship, Destroyer, Submarine
 
 class Field:
     def __init__(self):
@@ -28,13 +28,17 @@ class Field:
         size = Ship.ship_size
         confirmation = 'n'
         # Find endpoints from User until they enter 'Y' for confirmation
+        print(f"This ship is a {Ship.name} and takes up {size} points")
         while confirmation != 'y':
             option = self.place_first()
-            option_2 = self.place_endpoint(option, size)
-            if size > 2:
-                rem_options = self.place_rest(option, option_2, size)
-            if size < 3:
-                rem_options = ''
+        # while loop repeats if middle points are over another ship
+            rem_options = 'n'
+            while rem_options == 'n':
+                option_2 = self.place_endpoint(option, size)
+                if size > 2:
+                    rem_options = self.place_rest(option, option_2, size)
+                if size < 3:
+                    rem_options = ''
             confirmation = self.confirm_ship(option, option_2, rem_options, size)
         # Append points to ship, then reply with a confirmation print
         self.ship_append(option, option_2, rem_options, Ship)
@@ -88,9 +92,9 @@ class Field:
                     if option_2 in each:
                         each[each.index(option_2)] = "+"
                         counter = 1
-            else:
+            if counter != 1:
                 print(pot_options)
-                option_2 = input(f'\n That is not an option, please select from above. Try something like (A20)\n')
+                option_2 = input(f'\n That is either an incorrect option or crosses over another ship. please select a different option. Try something like (A20)\n')
         return option_2
 
 
@@ -101,19 +105,24 @@ class Field:
         alph_1 = int(option[1:])
         alph_2 = int(option_2[1:])
         alph_diff = opt_2_loc-opt_1_loc
-        alph_inc = alph_diff / (size-1)
+        alph_inc = int(alph_diff / (size-1))
         num_diff = alph_2-alph_1
         num_inc = num_diff / (size-1)
         #Generating new points and appending them to a list and changing matrix with new point
         point_list = []
-        for each in range(3,size):
-            letter = self.alphabet[opt_1_loc + alph_inc]
+        for each in range(2,size):
+            letter = self.alphabet[int(opt_1_loc + alph_inc)]
             number = alph_1 + num_inc
             point = (f'{letter}{number}')
             point_list.append(point)
+            counter = 0
             for each in self.matrix:
                 if point in each:
                     each[each.index(option_2)] = "+"
+                    counter = 1
+            if counter == 0:
+                print("A middle point conflicts with another point, please choose again.\n")
+                return 'n'
         return point_list
 
     def confirm_ship(self, option, option_2, rem_options, size):
@@ -139,6 +148,11 @@ class Field:
             Ship.points.append(each)        
 
     def set_up_ships(self):
+        self.destroyer = Destroyer()
+        self.submarine = Submarine()
+        self.battleship_1 = Battleship()
+        self.battleship_2 = Battleship()
+        self.air_carrier = AircraftCarrier()
         self.place_ship(self.destroyer)
         self.place_ship(self.submarine)
         self.place_ship(self.battleship_1)
