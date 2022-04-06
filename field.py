@@ -74,7 +74,7 @@ class Field:
         if pot_opt_4_number > 0 and pot_opt_4_number < 21:
             pot_options.append(f'{option[0]}{pot_opt_4_number}')
         print(pot_options)
-        option_2 = input(f'\n Which direction would you like the rest of the ship to head?\n')
+        option_2 = input(f'\n Which endpoint would you like for the ship?\n')
         # Repeat question if user entry is not in pot_options, find the user option in the matrix if valid, change to + when found
         counter = 0
         while counter != 1:
@@ -113,12 +113,15 @@ class Field:
 
     def confirm_ship(self, option, option_2, rem_options, size):
         confirm = ''
-        while confirm != 'y' or 'n':
+        counter = 0
+        while counter != 1:
             if size > 2:
                 confirm = input(f'Does {option}, {rem_options}, {option_2} sound correct for this ship? (y/n)')
             if size < 3:
                 confirm = input(f'Does {option}, {option_2} sound correct for this ship? (y/n)')
-            if confirm != 'y' or 'n':
+            if confirm == 'y' or confirm == 'n':
+                counter = 1
+            else:
                 print('\nThat was not a valid entry, please enter (y/n)')
         return confirm
 
@@ -137,4 +140,4 @@ class Field:
 asdf = Field()
 Destroyer_1 = Destroyer()
 asdf.place_ship(Destroyer_1)
-print(asdf.Destroyer_1.points)
+print(Destroyer_1.points)
